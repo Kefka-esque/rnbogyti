@@ -1,0 +1,62 @@
+// DEPRECATED, API calls and Thymeleaf UI stuff are now in their own controllers
+
+/*
+
+package com.example.rnbogyti.controller;
+
+import com.example.rnbogyti.entity.User;
+import com.example.rnbogyti.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+
+
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+    
+    // for HOME, ie / 
+    @PostMapping
+    public User createUser(@RequestBody User user){
+        return userService.createUser(user);
+    }
+
+    @GetMapping
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
+    // for /[id]
+
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable Long id){
+        return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+    }
+
+    // for /users
+
+    @GetMapping("/users/new")
+    public String showUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "new-user";
+    }
+
+    @PostMapping("/users")
+    public String saveUser(@ModelAttribute User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
+
+}
+*\

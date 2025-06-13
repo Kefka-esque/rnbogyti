@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Exercises</title>
+</head>
+<body>
+    <h1>User Exercise Log</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Exercise</th>
+                <th>Weight</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ue : ${userExercises}">
+                <td th:text="${ue.user.username}">Username</td>
+                <td th:text="${ue.exercise.name}">Exercise</td>
+                <td th:text="${ue.weight}">Weight</td>
+                <td th:text="${ue.date}">Date</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/user-exercises/new}">Log new exercise</a></p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title> Rainbow Boys - User List</title>
+    </head>
+    <body>
+        <h1>Rainbow Boys</h1>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Time Slot</th>
+                </tr>
+            </thead>
+            <body>
+                <tr th:each="user : ${users}"> 
+                    <td th:text="${user.username}">Username</td>
+                    <td th:text="${user.email}">Email</td>
+                    <td th:text="${#temporals.format(user.time, 'h:mm a')}"></td>
+                </tr>
+            </body>
+        </table>
+
+        <br/>
+
+        <a th:href="@{/}"><button>Home</button></a>
+        <a th:href="@{/users/new}"><button>Add Another Rainbow Boy</button></a>
+    </body>
+</html>

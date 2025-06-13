@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Rainbow Boys Gym Time Home</title>
+    </head>
+
+    <body>
+        <h1 th:text="${message}">This is the default welcome message, Mike will change this later, probably... </h1>
+
+        <form th:action="@{/confirm-time}" method="get">
+            <button type="submit">Confirm 6PM</button>
+        </form>
+
+        <br/>
+
+        <a th:href="@{/users/new}">
+            <button type="button">Add a New Rainbow Boy</button>
+        </a>
+
+        <a th:href="@{/user-exercises/new}">
+            <button type="button">Log a New Exercise</button>
+        </a>
+        
+        <a th:href="@{/exercises/new}">
+            <button type="button">Add New Exercise Type</button>
+        </a>
+
+    </body>
+</html>
