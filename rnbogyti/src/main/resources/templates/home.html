@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Rainbow Boys Gym Time Home</title>
+        <title th:text="'Rainbow Boys Gym Time Home'"></title>
     </head>
 
     <body>
-        <h1 th:text="${message}">This is the default welcome message, Mike will change this later, probably... </h1>
+        <h1 th:text="${message}">This actually changes nothing becuase the message gets passed in via Thymeleaf Model</h1>
 
+        <!--- This button does nothing right now since there is no per-user homepage -->
         <form th:action="@{/confirm-time}" method="get">
             <button type="submit">Confirm 6PM</button>
         </form>
 
         <br/>
-
-        <table border="1" cellpadding="8">
+        
+        <p><h2 th:text="'Times for today, ' + ${today}"></h2>
+        
+        <table border="2" cellpadding="12">
+            <thead>
+                <tr>
+                    <th th:each="user : ${users}" th:text="${user.username}"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td th:each="user : ${users}"
+                        th:text="${user.date == today} ? ${user.time} : UNCONFIRMED">
+                    </td>
+            </tbody>
+        </table></body></p>
+        
+        <p><h2 th:text="'Weight Chart'"></h2>
+            <table border="1" cellpadding="8">
             <thead>
                 <tr>
                     <th>Exercise</th>
@@ -27,20 +45,20 @@
                         th:text="${entry.value[user.username] != null ? entry.value[user.username] : '-'}">Weight</td>
                 </tr>
             </tbody>
-        </table>
+        </table></p>
 
 
-        <a th:href="@{/users/new}">
+        <p><a th:href="@{/users/new}">
             <button type="button">Add a New Rainbow Boy</button>
-        </a>
+        </a></p>
 
-        <a th:href="@{/user-exercises/new}">
+        <p><a th:href="@{/user-exercises/new}">
             <button type="button">Log a New Exercise</button>
-        </a>
+        </a></p>
         
-        <a th:href="@{/exercises/new}">
+        <p><a th:href="@{/exercises/new}">
             <button type="button">Add New Exercise Type</button>
-        </a>
-
+        </a></p>
+        <!--- More nav buttons needed maybe? like for /users or /exercises? -->
     </body>
 </html>

@@ -45,3 +45,4 @@ public class UserExerciseService {
         return userExerciseRepository.save(userExercise);
     }
 }
+    

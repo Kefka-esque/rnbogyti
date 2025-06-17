@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
 
 @Controller
 public class HomeController {
@@ -27,7 +28,7 @@ public class HomeController {
 
     @Autowired
     private UserExerciseService userExerciseService;
-
+    
     @GetMapping("/")
     public String home(Model model) {
         // 1. Get list of users and exercises
@@ -50,11 +51,11 @@ public class HomeController {
             }
             exerciseUserWeights.put(exercise.getName(), userWeights);
         }
-
+        // Attributes the page uses
         model.addAttribute("users", users);
         model.addAttribute("exerciseUserWeights", exerciseUserWeights);
-
+        model.addAttribute("today", LocalDate.now());
         model.addAttribute("message", "Welcome to the Rainbow Boys Gym Time app!");
         return "home";
-    }
+    } 
 }

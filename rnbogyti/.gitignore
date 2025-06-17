@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Exclude the db
+/data/
+
 ### STS ###
 .apt_generated
 .classpath

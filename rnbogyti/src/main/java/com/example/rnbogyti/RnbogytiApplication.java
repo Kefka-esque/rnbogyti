@@ -9,5 +9,4 @@ public class RnbogytiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RnbogytiApplication.class, args);
 	}
-
 }
