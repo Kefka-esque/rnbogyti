@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Log New Exercise</title>
+</head>
+<body>
+    <h1>Log a New Exercise</h1>
+
+    <form th:action="@{/user-exercises}" method="post">
+        <label>User:
+            <select name="userId" required>
+                <option th:each="user : ${users}" 
+                        th:value="${user.id}" 
+                        th:text="${user.username}">
+                </option>
+            </select>
+        </label>
+        <br/><br/>
+
+        <label>Exercise:
+            <select name="exerciseId" required>
+                <option th:each="exercise : ${exercises}" 
+                        th:value="${exercise.id}" 
+                        th:text="${exercise.name}">
+                </option>
+            </select>
+        </label>
+        <br/><br/>
+
+        <label>Weight:
+            <input type="number" name="weight" required step="any"/>
+        </label>
+        <br/><br/>
+
+        <label>Date:
+            <input type="date" name="date"/>
+            (leave blank for today)
+        </label>
+        <br/><br/>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <br/>
+    <a th:href="@{/user-exercises}">Back to List</a>
+</body>
+</html>

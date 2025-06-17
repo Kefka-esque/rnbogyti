@@ -4,15 +4,21 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "user_exercise", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"user_id", "exercise_if"})
+})
 public class UserExercise {
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
     private double weight;

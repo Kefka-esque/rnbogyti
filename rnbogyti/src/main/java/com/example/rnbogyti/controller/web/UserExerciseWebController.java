@@ -32,7 +32,7 @@ public class UserExerciseWebController {
     public String listUserExercises(Model model) {
         List<UserExercise> allUserExercises = userExerciseService.getAllUserExercises();
         model.addAttribute("userExercises", allUserExercises);
-        return "user-exercises"; // Your HTML view
+        return "user-exercise-list"; // Your HTML view
     }
 
     @GetMapping("/new")
@@ -65,7 +65,7 @@ public class UserExerciseWebController {
             userExercise.setDate(LocalDate.parse(dateStr));
         }
 
-        userExerciseService.saveUserExercise(userExercise);
+        userExerciseService.saveOrUpdateUserExercise(user, exercise, weight, LocalDate.now());
 
         return "redirect:/user-exercises";
     }

@@ -13,6 +13,23 @@
 
         <br/>
 
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Exercise</th>
+                    <th th:each="user : ${users}" th:text="${user.username}"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry : ${exerciseUserWeights}">
+                    <td th:text="${entry.key}">Exercise Name</td>
+                    <td th:each="user : ${users}"
+                        th:text="${entry.value[user.username] != null ? entry.value[user.username] : '-'}">Weight</td>
+                </tr>
+            </tbody>
+        </table>
+
+
         <a th:href="@{/users/new}">
             <button type="button">Add a New Rainbow Boy</button>
         </a>

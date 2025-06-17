@@ -45,7 +45,7 @@ public class HomeController {
                 if (latest != null) {
                     userWeights.put(user.getUsername(), latest.getWeight());
                 } else {
-                    userWeights.put(user.getUsername(), null); // or 0.0 if you prefer
+                    userWeights.put(user.getUsername(), null);
                 }
             }
             exerciseUserWeights.put(exercise.getName(), userWeights);

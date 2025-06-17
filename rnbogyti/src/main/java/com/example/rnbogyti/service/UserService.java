@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+// import java.util.Optional;
+// This was causing issues, it is bye bye for now
 
 @Service
 public class UserService {
