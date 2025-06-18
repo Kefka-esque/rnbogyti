@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <title>Select User</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 2em;
+        }
+        .user-button {
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin: 1em auto;
+            padding: 1em;
+            font-size: 1.5em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .add-user-button {
+            margin-top: 2em;
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Who Are You?</h1>
+
+    <div th:each="user : ${users}">
+        <form th:action="@{/user/home/{id}(id=${user.id})}" method="get">
+            <button type="submit" class="user-button">[[${user.username}]]</button>
+        </form>
+    </div>
+
+    <!-- Add User -->
+    <form th:action="@{/users/new}" method="get">
+        <button type="submit" class="user-button add-user-button">Someone Else</button>
+    </form>
+
+</body>
+</html>

@@ -6,6 +6,7 @@ target/
 
 # Exclude the db
 /data/
+*.db
 
 ### STS ###
 .apt_generated

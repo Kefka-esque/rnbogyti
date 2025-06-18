@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
+        <link rel="stylesheet" type="text/css" href="/css/styles.css" />
         <title> Rainbow Boys - User List</title>
     </head>
     <body>
         <h1>Rainbow Boys</h1>
 
-        <table border="1">
+        <div class="table-responsive"><table border="1">
             <thead>
                 <tr>
                     <th>Username</th>
@@ -21,7 +22,7 @@
                     <td th:text="${#temporals.format(user.time, 'h:mm a')}"></td>
                 </tr>
             </body>
-        </table>
+        </table></div>
 
         <br/>
 

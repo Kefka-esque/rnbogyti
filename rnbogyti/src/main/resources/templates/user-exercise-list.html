@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
     <title>User Exercises</title>
 </head>
 <body>
     <h1>User Exercise Log</h1>
+
+    <div class="table-responsive">
 
     <table border="1">
         <thead>
@@ -23,7 +26,7 @@
                 <td th:text="${ue.date}">Date</td>
             </tr>
         </tbody>
-    </table>
+    </table> </div>
 
     <p><a th:href="@{/user-exercises/new}">Log new exercise</a></p>
     <p><a th:href="@{/exercises/new}">Log a new exercise type</a></p>

@@ -1,0 +1,127 @@
+/* styles.css - Dark Mode */
+
+body {
+    font-family: sans-serif;
+    padding: 1rem;
+    margin: 0;
+    background-color: hsl(0, 0%, 7%); /* dark background */
+    color: #e0e0e0;            /* light text */
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #e0e0e0;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-top: 1.2rem;
+    font-size: 1.1rem;
+    color: #ddd;
+    text-align: center;
+}
+
+select,
+input[type="number"],
+input[type="date"],
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    box-sizing: border-box;
+    background-color: #222;   /* dark inputs */
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+select:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="text"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: #82aaff;  /* blue highlight on focus */
+    box-shadow: 0 0 5px #82aaff;
+}
+
+button {
+    display: block;         
+    margin: 2rem auto 0 auto; 
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    max-width: 400px;
+    width: auto;            
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: #82aaff;  /* soft blue */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Wrap tables to allow horizontal scroll on small screens */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+/* Basic table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  max-width: 100%;
+  table-layout: auto;
+  background-color: #1e1e1e; /* dark background for table */
+  color: #e0e0e0;
+}
+
+/* Table cell styles */
+th, td {
+  border: 1px solid #333;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  white-space: nowrap; /* keep content in one line */
+  font-size: 1rem;
+  color: #ddd;
+  text-align: center;
+}
+
+th {
+  background-color: #2a2a2a;
+}
+
+/* Responsive font size on smaller devices */
+@media (max-width: 600px) {
+  th, td {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+}

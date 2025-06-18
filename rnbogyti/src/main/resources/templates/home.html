@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title th:text="'Rainbow Boys Gym Time Home'"></title>
+        <title th:text="|${user.username}'s Home|"></title>
+        <link rel="stylesheet" type="text/css" href="/css/styles.css" />
     </head>
 
     <body>
         <h1 th:text="${message}">This actually changes nothing becuase the message gets passed in via Thymeleaf Model</h1>
 
-        <!--- This button does nothing right now since there is no per-user homepage -->
+        <!--- This button does nothing right now since there is no per-user homepage 
         <form th:action="@{/confirm-time}" method="get">
             <button type="submit">Confirm 6PM</button>
         </form>
 
-        <br/>
+        <br/> -->
         
         <p><h2 th:text="'Times for today, ' + ${today}"></h2>
         
-        <table border="2" cellpadding="12">
+        <div class="table-responsive">
+            <table border="2" cellpadding="12">
             <thead>
                 <tr>
                     <th th:each="user : ${users}" th:text="${user.username}"></th>
@@ -28,10 +30,10 @@
                         th:text="${user.date == today} ? ${user.time} : UNCONFIRMED">
                     </td>
             </tbody>
-        </table></body></p>
+        </table></body></div></p>
         
         <p><h2 th:text="'Weight Chart'"></h2>
-            <table border="1" cellpadding="8">
+            <div class="table-responsive"><table border="2" cellpadding="8">
             <thead>
                 <tr>
                     <th>Exercise</th>
@@ -45,12 +47,7 @@
                         th:text="${entry.value[user.username] != null ? entry.value[user.username] : '-'}">Weight</td>
                 </tr>
             </tbody>
-        </table></p>
-
-
-        <p><a th:href="@{/users/new}">
-            <button type="button">Add a New Rainbow Boy</button>
-        </a></p>
+        </table></div></p>
 
         <p><a th:href="@{/user-exercises/new}">
             <button type="button">Log a New Exercise</button>
