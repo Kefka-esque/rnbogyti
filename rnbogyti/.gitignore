@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 
 # Exclude the db
-/data/
+data/
 *.db
 
 ### STS ###
