@@ -18,8 +18,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class HomeController {
@@ -34,19 +40,68 @@ public class HomeController {
     private UserExerciseService userExerciseService;
     
     @GetMapping("/")
-    public String selectUser(Model model){
+    public String selectUser(Model model, HttpSession session){
+        Long userId = (Long) session.getAttribute("userId");
+
+        if (userId != null){
+            return "redirect:/user/home/" + userId;
+        }
+
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "select-user";
     }
 
-    // The old home page, now per-user so the time functions can be nicer. Whole thing is still WIP though.
-    // Some pages that should point to user hoem still point to the "/" home; but this should be fixed in the future 
-    // once I introduce http sessions; there will be a redirect to user home if a user id is already in the session 
     @GetMapping("/user/home/{id}")
-    public String home(@PathVariable Long id, Model model) {
-        // 1. Get list of users and exercises
+    public String home(@PathVariable Long id, Model model, HttpSession session) {
+        
+        // Sets the user id so that the sign in page at landing won't display anymore
+        session.setAttribute("userId", id);
+
+        // We'll need a list of users for a few different things on this page
         List<User> users = userService.getAllUsers();
+
+       
+        // Logic to display the time chart, or not, if all users have confirmed a time
+        boolean allConfirmed = true;
+        LocalTime agreedTime = null;
+
+        for (User user : users){
+            if (user.getDate() == null || ! user.getDate().equals(LocalDate.now()) || user.getTime() == null){
+                allConfirmed = false;
+                break;
+            }
+            if (agreedTime == null){
+                agreedTime = user.getTime();
+            } else if (! agreedTime.equals(user.getTime())){
+                allConfirmed = false;
+                break;
+            }
+        }
+
+        // Logic to display the date in a pretty way that makes my brain happy
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE MMMM d");
+        String prettyDate = today.format(formatter);
+
+        // Proper grammar separates us from the animals:
+        int day = today.getDayOfMonth();
+        String suffix;
+        if (day >= 11 && day <= 13) {
+            suffix = "th";
+        } else {
+            switch (day % 10) {
+                case 1: suffix = "st"; break;
+                case 2: suffix = "nd"; break;
+                case 3: suffix = "rd"; break;
+                default: suffix = "th";
+            }
+        }
+
+        prettyDate += suffix;
+
+        // Below is logic for building and displaying the weght reference chart
+        // 1. Get list of users and exercises
         List<Exercise> exercises = exerciseService.getAllExercises();
 
         // 2. Build a map: exerciseName -> (userName -> weight)
@@ -72,8 +127,27 @@ public class HomeController {
         model.addAttribute("users", users);
         model.addAttribute("user", user);
         model.addAttribute("exerciseUserWeights", exerciseUserWeights);
-        model.addAttribute("today", LocalDate.now());
-        model.addAttribute("message", "Welcome to the Rainbow Boys Gym Time app!");
+        model.addAttribute("today", today);
+        model.addAttribute("prettyDate", prettyDate);
+        model.addAttribute("allConfirmed", allConfirmed);
+        model.addAttribute("agreedTime", agreedTime);
         return "home";
     } 
+
+    @PostMapping("/user/{id}/confirm-time")
+    public String confirmTime(@RequestParam Long userId, @RequestParam String time, HttpSession session) {
+        User user = userService.getUserById(userId);
+
+        if ("None".equals(time)) {
+            user.setTime(null);
+        } else {
+            user.setTime(LocalTime.parse(time));
+        }
+
+        user.setDate(LocalDate.now());
+        userService.saveUser(user);
+
+        return "redirect:/user/home/" + userId;
+    }
+    
 }

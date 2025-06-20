@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <h1 th:text="${message}">This actually changes nothing becuase the message gets passed in via Thymeleaf Model</h1>
+        <h1 th:text="| Welcome ${user.username}!|"></h1>
 
         <!--- This button does nothing right now since there is no per-user homepage 
         <form th:action="@{/confirm-time}" method="get">
@@ -14,23 +14,56 @@
         </form>
 
         <br/> -->
+
+        <h2>Confirm your time for today:</h2>
+
+        <form th:action="@{/user/{id}/confirm-time}" method="post" style="margin-bottom: 2rem;">
+            <label for="time">Choose a Time:</label>
+            <select name="time" id="time" required>
+                <option value="">-- Select Time --</option>
+                <option value="17:00">5:00 PM</option>
+                <option value="17:30">5:30 PM</option>
+                <option value="18:00">6:00 PM</option>
+                <option value="18:30">6:30 PM</option>
+                <option value="19:00">7:00 PM</option>
+                <option value="19:30">7:30 PM</option>
+                <option value="20:00">8:00 PM</option>
+                <option value="None">I can't go today</option>
+            </select>
+
+            <input type="hidden" name="userId" th:value="${user.id}" />
+            <button type="submit">Confirm</button>
+        </form>
+
         
-        <p><h2 th:text="'Times for today, ' + ${today}"></h2>
+        <p><h2 th:text="'Times for today: ' + ${prettyDate}"></h2>
         
         <div class="table-responsive">
-            <table border="2" cellpadding="12">
-            <thead>
-                <tr>
-                    <th th:each="user : ${users}" th:text="${user.username}"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td th:each="user : ${users}"
-                        th:text="${user.date == today} ? ${user.time} : UNCONFIRMED">
-                    </td>
-            </tbody>
-        </table></body></div></p>
+            <div th:if="${allConfirmed}">
+                <h2 style="color: lime; font-size: 2rem;">
+                    GYM CONFIRMED FOR 
+                    <span th:text="${#temporals.format(agreedTime, 'h:mm a')}">6:00 PM</span>
+                </h2>
+            </div>
+
+            <table th:unless="${allConfirmed}" border="2" cellpadding="12">
+                <thead>
+                    <tr>
+                        <th th:each="user : ${users}" th:text="${user.username}"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:each="user : ${users}">
+                            <span th:if="${user.date == today and user.time == null}">Cannot go tonight</span>
+                            <span th:if="${user.date == today and user.time != null}" th:text="${#temporals.format(user.time, 'h:mm a')}">6:00 PM</span>
+                            <span th:unless="${user.date == today}">UNCONFIRMED</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         
         <p><h2 th:text="'Weight Chart'"></h2>
             <div class="table-responsive"><table border="2" cellpadding="8">
