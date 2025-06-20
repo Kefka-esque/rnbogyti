@@ -35,6 +35,32 @@
             <button type="submit">Confirm</button>
         </form>
 
+        <!-- Crucial Wahlberg-based feature ahead-->
+
+        <div id="shamePopup" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+            background-color: #222; padding: 1rem; border-radius: 8px; z-index: 1000; text-align: center;">
+            <img src="/images/wahlberg_shame.gif" alt="Shame!" width="300" />
+            <p style="color: #fff; margin-top: 0.5rem;">Mark Wahlberg says "May thy muscles shrink and atrophy!".</p>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const timeSelect = document.getElementById("time");
+                const shamePopup = document.getElementById("shamePopup");
+
+                if (timeSelect && shamePopup) {
+                    timeSelect.addEventListener("change", function () {
+                        if (this.value === "None") {
+                            shamePopup.style.display = "block";
+                            setTimeout(() => {
+                                shamePopup.style.display = "none";
+                            }, 4000); 
+                        }
+                    });
+                }
+            });
+        </script>
+
         
         <p><h2 th:text="'Times for today: ' + ${prettyDate}"></h2>
         
@@ -55,7 +81,7 @@
                 <tbody>
                     <tr>
                         <td th:each="user : ${users}">
-                            <span th:if="${user.date == today and user.time == null}">Cannot go tonight</span>
+                            <span th:if="${user.date == today and user.time == null}"><img th:src="@{/images/wahlberg_shame.gif}" alt="Shame!" width="200" /></span>
                             <span th:if="${user.date == today and user.time != null}" th:text="${#temporals.format(user.time, 'h:mm a')}">6:00 PM</span>
                             <span th:unless="${user.date == today}">UNCONFIRMED</span>
                         </td>
