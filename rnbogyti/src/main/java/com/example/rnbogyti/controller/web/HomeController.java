@@ -39,7 +39,7 @@ public class HomeController {
     @Autowired
     private UserExerciseService userExerciseService;
     
-    @GetMapping("/")
+    @GetMapping("/") // Splash page to select a user, no pw req'd
     public String selectUser(Model model, HttpSession session){
         Long userId = (Long) session.getAttribute("userId");
 
@@ -52,7 +52,13 @@ public class HomeController {
         return "select-user";
     }
 
-    @GetMapping("/user/home/{id}")
+    @GetMapping("/login") // Login page for admin activities
+    public String login() {
+        return "login";
+    }
+
+    // HEY HELLO MIKE DONT FORGET TO CHANGE THE CHART LOGIC SO IT DISPLAYS THE USER FIRST IN THE  WEIGHT CHART!!!
+    @GetMapping("/user/home/{id}") //Per-user homepage
     public String home(@PathVariable Long id, Model model, HttpSession session) {
         
         // Sets the user id so that the sign in page at landing won't display anymore
@@ -101,6 +107,8 @@ public class HomeController {
         prettyDate += suffix;
 
         // Below is logic for building and displaying the weght reference chart
+        // AGAIN DONT FORGET TO CHANGE THE CHART LOGIC SO IT DISPLAYS THE USER FIRST!!!!
+        
         // 1. Get list of users and exercises
         List<Exercise> exercises = exerciseService.getAllExercises();
 
