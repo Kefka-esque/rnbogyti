@@ -12,7 +12,8 @@
             <select name="userId" required>
                 <option th:each="user : ${users}" 
                         th:value="${user.id}" 
-                        th:text="${user.username}">
+                        th:text="${user.username}"
+                        th:selected="${user.id.equals(currentUser.id)}">
                 </option>
             </select>
         </label>

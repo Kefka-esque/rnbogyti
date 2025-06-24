@@ -8,13 +8,6 @@
     <body>
         <h1 th:text="| Welcome ${user.username}!|"></h1>
 
-        <!--- This button does nothing right now since there is no per-user homepage 
-        <form th:action="@{/confirm-time}" method="get">
-            <button type="submit">Confirm 6PM</button>
-        </form>
-
-        <br/> -->
-
         <h2>Confirm your time for today:</h2>
 
         <form th:action="@{/user/{id}/confirm-time}" method="post" style="margin-bottom: 2rem;">
@@ -90,23 +83,27 @@
             </table>
         </div>
 
-        
-        <p><h2 th:text="'Weight Chart'"></h2>
-            <div class="table-responsive"><table border="2" cellpadding="8">
-            <thead>
-                <tr>
-                    <th>Exercise</th>
-                    <th th:each="user : ${users}" th:text="${user.username}"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="entry : ${exerciseUserWeights}">
-                    <td th:text="${entry.key}">Exercise Name</td>
-                    <td th:each="user : ${users}"
-                        th:text="${entry.value[user.username] != null ? entry.value[user.username] : '-'}">Weight</td>
-                </tr>
-            </tbody>
-        </table></div></p>
+        <br>
+
+        <h2 th:text="'Weight Chart'"></h2>
+            <div class="table-responsive" th:each="entry : ${groupedWeights}">
+                <h3 th:text="${entry.key.displayName}">Exercise Type</h3>
+                <table border="2" cellpadding="8">
+                    <thead>
+                        <tr>
+                            <th>Exercise</th>
+                            <th th:each="user : ${users}" th:text="${user.username}">User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="exerciseEntry : ${entry.value}">
+                            <td th:text="${exerciseEntry.key}">Exercise Name</td>
+                            <td th:each="user : ${users}"
+                                th:text="${exerciseEntry.value[user.username] != null ? exerciseEntry.value[user.username] : '-'}">Weight</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
         <p><a th:href="@{/user-exercises/new}">
             <button type="button">Log a New Exercise</button>

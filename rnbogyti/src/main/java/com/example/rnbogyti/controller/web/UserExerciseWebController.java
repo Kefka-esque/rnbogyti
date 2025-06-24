@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.servlet.http.HttpSession;
+
+
 @Controller
 @RequestMapping("/user-exercises")
 public class UserExerciseWebController {
@@ -36,12 +39,22 @@ public class UserExerciseWebController {
     }
 
     @GetMapping("/new")
-    public String showCreateForm(Model model) {
+    public String showCreateForm(Model model, HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/"; // fallback if user not logged in
+        }
+
+        User currentUser = userService.getUserById(userId);
+
         model.addAttribute("userExercise", new UserExercise());
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("exercises", exerciseService.getAllExercises());
+        model.addAttribute("currentUser", currentUser);
         return "user-exercise-form"; // Your HTML form view
     }
+
+
 
     @PostMapping
     public String saveUserExercise(@RequestParam("userId") Long userId,

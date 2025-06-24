@@ -9,6 +9,12 @@
     <h1>Add New Exercise</h1>
     <form th:action="@{/exercises}" th:object="${exercise}" method="post">
         <label>Name: <input type="text" th:field="*{name}" required /></label><br/>
+        <label for="type">Exercise Type:</label>
+        <select name="type" id="type" required>
+            <option value="UPPER">Upper</option>
+            <option value="LOWER">Lower</option>
+            <option value="CORE_BACK">Core/Back</option>
+        </select>
         <button type="submit">Add Exercise</button>
     </form>
     

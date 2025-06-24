@@ -6,12 +6,16 @@ import com.example.rnbogyti.entity.UserExercise;
 import com.example.rnbogyti.service.ExerciseService;
 import com.example.rnbogyti.service.UserExerciseService;
 import com.example.rnbogyti.service.UserService;
+import com.example.rnbogyti.enums.exerciseType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,9 +26,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -66,6 +67,11 @@ public class HomeController {
 
         // We'll need a list of users for a few different things on this page
         List<User> users = userService.getAllUsers();
+        
+        // This is the user that is currently logged in, so we can display their info first in charts and such
+        User currentUser = userService.getUserById(id);
+        users.remove(currentUser); 
+        users.add(0, currentUser);
 
        
         // Logic to display the time chart, or not, if all users have confirmed a time
@@ -107,34 +113,36 @@ public class HomeController {
         prettyDate += suffix;
 
         // Below is logic for building and displaying the weght reference chart
-        // AGAIN DONT FORGET TO CHANGE THE CHART LOGIC SO IT DISPLAYS THE USER FIRST!!!!
+        
         
         // 1. Get list of users and exercises
         List<Exercise> exercises = exerciseService.getAllExercises();
 
-        // 2. Build a map: exerciseName -> (userName -> weight)
-        Map<String, Map<String, Double>> exerciseUserWeights = new LinkedHashMap<>();
+        // Map: ExerciseType -> (ExerciseName -> (Username -> Weight))
+        Map<exerciseType, Map<String, Map<String, Double>>> groupedWeights = new LinkedHashMap<>();
 
         for (Exercise exercise : exercises) {
+            exerciseType type = exercise.getType();
+
+            // Ensure there's a sub-map for this type
+            groupedWeights.putIfAbsent(type, new LinkedHashMap<>());
+
             Map<String, Double> userWeights = new HashMap<>();
             for (User user : users) {
-                // Get the latest UserExercise entry for this user & exercise
                 UserExercise latest = userExerciseService.getLatestByUserAndExercise(user.getId(), exercise.getId());
-                if (latest != null) {
-                    userWeights.put(user.getUsername(), latest.getWeight());
-                } else {
-                    userWeights.put(user.getUsername(), null);
-                }
+                userWeights.put(user.getUsername(), latest != null ? latest.getWeight() : null);
             }
-            exerciseUserWeights.put(exercise.getName(), userWeights);
+
+            groupedWeights.get(type).put(exercise.getName(), userWeights);
         }
+
 
         User user = userService.getUserById(id);
 
         // Attributes the page uses
         model.addAttribute("users", users);
         model.addAttribute("user", user);
-        model.addAttribute("exerciseUserWeights", exerciseUserWeights);
+        model.addAttribute("groupedWeights", groupedWeights);
         model.addAttribute("today", today);
         model.addAttribute("prettyDate", prettyDate);
         model.addAttribute("allConfirmed", allConfirmed);

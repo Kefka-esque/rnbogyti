@@ -41,7 +41,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/user/home/*", "/login", "/css/**", "/images/**", "/js/**").permitAll() // anyone can access these resources
+                .requestMatchers("/", 
+                                "/user/home/**", 
+                                "/user-exercises/**",
+                                "/exercises/**",
+                                "/user/{id}/confirm-time",
+                                "/login", 
+                                "/css/**", 
+                                "/images/**", 
+                                "/js/**"
+                                ).permitAll() // anyone can access these resources
                 .requestMatchers("/users/new", "/users/delete/**").hasRole("ADMIN") // only admins can access
                 .anyRequest().authenticated()
             )
